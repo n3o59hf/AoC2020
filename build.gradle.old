@@ -1,0 +1,21 @@
+plugins {
+    id 'java'
+    id 'org.jetbrains.kotlin.jvm' version '1.4.20'
+    id 'application'
+}
+
+group 'lv.n3o'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib"
+}
+
+application {
+    mainClass = 'lv.n3o.aoc2020.Main'
+}
