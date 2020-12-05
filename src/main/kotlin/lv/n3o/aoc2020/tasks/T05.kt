@@ -44,8 +44,8 @@ class T05(input: Input) : Task(input) {
 
         return low
     }
+
+    private operator fun Coord2d.div(i: Int): C2 = C2(x / 2, y / 2)
+
+    private fun Coord2d.seatNumber() = x + y * 8
 }
-
-private operator fun Coord2d.div(i: Int): C2 = C2(x / 2, y / 2)
-
-private fun Coord2d.seatNumber() = x + y * 8
