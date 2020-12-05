@@ -30,10 +30,11 @@ val testCases: List<TestCase> = listOf(
     ci(1, "224436", "303394260"),
     ci(2, "542", "360"),
     ci(3, "153", "2421944712"),
-    ci(4,"216","150")
+    ci(4,"216","150"),
+    ci(5,"996","671"),
 )
 
-//val testable: TestCase? = ci(4,"","")
+//val testable: TestCase? = ci(5,"","")
 val testable: TestCase? = null
 
 fun main() = runBlocking {
