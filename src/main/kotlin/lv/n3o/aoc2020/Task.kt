@@ -24,6 +24,13 @@ abstract class Input {
                 C2(x, y) to c
             }
         }.toMap()
+
+    fun asLinesPerBlock(trim: Boolean = true): List<List<String>> =
+        input.replace("\r", "").split("\n\n").map {
+            it.split("\n").let { block ->
+                if (trim) block.map(String::trim) else block
+            }
+        }
 }
 
 class ClasspathInput(val name: String) : Input() {
