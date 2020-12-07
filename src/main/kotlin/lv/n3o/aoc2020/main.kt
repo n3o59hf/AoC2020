@@ -37,6 +37,7 @@ val testCases: List<TestCase> = listOf(
     ci(4, "216", "150"),
     ci(5, "996", "671"),
     ci(6, "6430", "3125"),
+    ci(7, "272", "172246"),
 )
 
 fun main() = runBlocking {
