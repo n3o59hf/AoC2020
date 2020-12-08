@@ -31,6 +31,8 @@ abstract class Input {
                 if (trim) block.map(String::trim) else block
             }
         }
+
+    fun asProgram() = asLines().map { it.trim().asInstruction() }
 }
 
 class ClasspathInput(val name: String) : Input() {
