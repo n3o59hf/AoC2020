@@ -14,8 +14,12 @@ abstract class Input {
         if (trim) it.map(String::trim) else it
     }
 
-    fun asListOfLongs(): List<Long> = asLines().map {
+    fun asListOfLongs() = asLines().map {
         it.trim().toLong()
+    }
+
+    fun asListOfInts() = asLines().map {
+        it.trim().toInt()
     }
 
     fun asCoordGrid(): Map<C2, Char> =
