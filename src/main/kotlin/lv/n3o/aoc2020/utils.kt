@@ -1,11 +1,8 @@
 package lv.n3o.aoc2020
 
-import lv.n3o.aoc2020.coords.C
 import lv.n3o.aoc2020.coords.C2
-import lv.n3o.aoc2020.coords.Coord2d
 import kotlin.math.abs
 import kotlin.math.roundToInt
-
 
 private val startTime = System.nanoTime()
 
@@ -92,13 +89,13 @@ fun Long.toNearestMultipleUp(factor: Long): Long {
     return ((this / factor) + reminder) * factor
 }
 
-fun <T> Map<Coord2d, T>.debugDraw(cellWidth: Int = 1, conversion: (T?) -> Any = { it.toString() }) {
+fun <T> Map<C2, T>.debugDraw(cellWidth: Int = 1, conversion: (T?) -> Any = { it.toString() }) {
     val allKeys = keys
 
-    val maxX = allKeys.map(Coord2d::x).max() ?: 1
-    val maxY = allKeys.map(Coord2d::y).max() ?: 1
-    val minX = allKeys.map(Coord2d::x).min() ?: 1
-    val minY = allKeys.map(Coord2d::y).min() ?: 1
+    val maxX = allKeys.map(C2::x).max() ?: 1
+    val maxY = allKeys.map(C2::y).max() ?: 1
+    val minX = allKeys.map(C2::x).min() ?: 1
+    val minY = allKeys.map(C2::y).min() ?: 1
 
 
     val cellBorder = (0 until cellWidth).joinToString("") { "-" }
@@ -106,7 +103,7 @@ fun <T> Map<Coord2d, T>.debugDraw(cellWidth: Int = 1, conversion: (T?) -> Any = 
 
     val output = "\n$verticalSeperator" + (minY..maxY).map { y ->
         (minX..maxX).map { x ->
-            var cell = conversion(this[C(x, y)]).toString()
+            var cell = conversion(this[C2(x, y)]).toString()
             cell = cell.substring(0, cell.length.coerceAtMost(cellWidth))
             if (cell.length < cellWidth)
                 cell = cell.padEnd(cell.length + ((cellWidth - cell.length) / 2))
