@@ -43,6 +43,7 @@ val testCases: List<TestCase> = listOf(
     ci(10, "2030", "42313823813632"),
     ci(11, "2344", "2076"),
     ci(12, "2879", "178986"),
+    ci(13, "3606", "379786358533423"),
 )
 
 fun main() = runBlocking {
@@ -138,6 +139,9 @@ suspend fun testNewTasks(): Boolean {
 
                 val time = measureTimeMillis {
                     val task = c.executor(c.input)
+                    task.debugListener = { s ->
+                        println(s)
+                    }
                     println(task.a())
                     println(task.b())
                 }

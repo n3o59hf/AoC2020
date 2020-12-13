@@ -55,11 +55,11 @@ abstract class Task(val input: Input) {
         debugListener ?: return
 
         val logline = things.map { it ?: "<null>" }.joinToString(" ") { it.toString() }
-        val className = this::class.java.canonicalName.split('.').takeLast(2)[0].padEnd(3, ' ')
+        val functionName = Thread.currentThread().stackTrace[2].methodName.padStart(12,' ')
         val time = timeFromApplicationStart.formatTime()
-        val methodName = Thread.currentThread().stackTrace[2].methodName
+        val lineNumber = Thread.currentThread().stackTrace[2].lineNumber.toString().padStart(5,' ')
 
-        debugListener?.let { it(("$time ($className.$methodName): $logline\n")) }
+        debugListener?.let { it(("$functionName:$lineNumber: ($time) $logline")) }
     }
 
     fun log(scope: () -> String) {
