@@ -29,7 +29,7 @@ class T13(input: Input) : Task(input) {
 
         while (true) {
             time += increment
-            log("Looking at time: $time")
+            log("Looking at time: $time, resulting offset ${indexedLines[currentIndex].gettDiff(time)}")
             if (indexedLines[currentIndex].checkTime(time)) {
                 if (lastZero == null) {
                     log("First match for ${indexedLines[currentIndex]}")
@@ -48,5 +48,6 @@ class T13(input: Input) : Task(input) {
 
     data class BussCheck(val id: Long, val offset: Long) {
         fun checkTime(time: Long) = ((time + offset) % id) == 0L
+        fun gettDiff(time: Long) = ((time + offset) % id)
     }
 }
