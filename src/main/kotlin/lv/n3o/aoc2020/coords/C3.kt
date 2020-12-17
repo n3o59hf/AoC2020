@@ -7,14 +7,13 @@ data class C3(
     val y: Int,
     val z: Int
 ) {
-    operator fun plus(other: C3) = new(x + other.x, y + other.y, z + other.z)
-    operator fun minus(other: C3) = this + new(-other.x, -other.y, -other.z)
+    operator fun plus(other: C3) = C3(x + other.x, y + other.y, z + other.z)
+    operator fun minus(other: C3) = this + C3(-other.x, -other.y, -other.z)
 
-    fun new(x: Int, y: Int, z: Int) = C3(x, y, z)
     fun distance(to: C3) = abs(to.x - x) + abs(to.y - y) + abs(to.z - z)
 
-    fun vector(to: C3) = new(to.x - x, to.y - y, to.z - z)
-    fun unit() = new(
+    fun vector(to: C3) = C3(to.x - x, to.y - y, to.z - z)
+    fun unit() = C3(
         when {
             x > 0 -> 1
             x < 0 -> -1
@@ -31,4 +30,12 @@ data class C3(
             else -> 0
         }
     )
+
+    fun neighbors27(includeSelf: Boolean = false) = (-1..1).flatMap { dx ->
+        (-1..1).flatMap { dy ->
+            (-1..1).mapNotNull { dz ->
+                if (!includeSelf && dx == 0 && dy == 0 && dz == 0) null else this+C3(dx, dy, dz)
+            }
+        }
+    }
 }
