@@ -2,12 +2,24 @@ package lv.n3o.aoc2020.coords
 
 import kotlin.math.abs
 
+private val NEIGHBORS81 = (-1..1).flatMap { dx ->
+    (-1..1).flatMap { dy ->
+        (-1..1).flatMap { dz ->
+            (-1..1).mapNotNull { dw ->
+                if (dx == 0 && dy == 0 && dz == 0 && dw == 0) null else C4(dx, dy, dz, dw)
+            }
+        }
+    }
+}.toSet()
+
 data class C4(
     val x: Int,
     val y: Int,
     val z: Int,
     val w: Int
 ) {
+    val neighbors81 by lazy { NEIGHBORS81.map { this + it } }
+
     operator fun plus(other: C4) = C4(x + other.x, y + other.y, z + other.z, w + other.w)
     operator fun minus(other: C4) = this + C4(-other.x, -other.y, -other.z, -other.w)
 
@@ -36,14 +48,4 @@ data class C4(
             else -> 0
         }
     )
-
-    fun neighbors81(includeSelf: Boolean = false) = (-1..1).flatMap { dx ->
-        (-1..1).flatMap { dy ->
-            (-1..1).flatMap { dz ->
-                (-1..1).mapNotNull { dw ->
-                    if (!includeSelf && dx == 0 && dy == 0 && dz == 0 && dw == 0) null else this + C4(dx, dy, dz, dw)
-                }
-            }
-        }
-    }
 }
