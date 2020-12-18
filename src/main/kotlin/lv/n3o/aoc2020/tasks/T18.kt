@@ -4,102 +4,82 @@ import lv.n3o.aoc2020.Input
 import lv.n3o.aoc2020.Task
 
 class T18(input: Input) : Task(input) {
-    val expressions = input.asLines()
+    sealed class Expression(private val representation: String) {
+        class Constant(val value: Long) : Expression("$value")
+        object Addition : Expression("+")
+        object Multiplication : Expression("*")
+        class Subexpression(val list: List<Expression>) : Expression("$list")
 
-    fun calculate1(input: String): String {
-        // reduce parenthesis
-        var buffer = ""
-        var depth = 0
-        var expression = ""
-        loop@ for (i in input.indices) {
-            val c = input[i]
-            when (c) {
-                ' ' -> continue@loop
-                '(' -> depth++
-                ')' -> {
-                    depth--
-                    if (depth == 0) {
-                        expression += calculate1(buffer.drop(1))
-                        buffer = ""
-                        continue@loop
-                    }
-                }
-            }
-            if (depth > 0) {
-                buffer += c
-            } else {
-                expression += c
-            }
-        }
-
-        while (expression.any { !it.isDigit() }) {
-            val arg1 = expression.takeWhile { it.isDigit() }
-            val operand = expression[arg1.length]
-            val arg2 = expression.drop(arg1.length + 1).takeWhile { it.isDigit() }
-            val result =
-                if (operand == '+') (arg1.toLong() + arg2.toLong()).toString() else (arg1.toLong() * arg2.toLong()).toString()
-            expression = result + expression.drop(arg1.length + arg2.length + 1)
-        }
-
-        return expression
-
+        override fun toString() = representation
     }
-    fun calculate2(input: String): String {
-        // reduce parenthesis
-        var buffer = ""
-        var depth = 0
-        var expression = ""
-        loop@ for (i in input.indices) {
-            val c = input[i]
-            when (c) {
-                ' ' -> continue@loop
-                '(' -> depth++
-                ')' -> {
-                    depth--
-                    if (depth == 0) {
-                        expression += calculate2(buffer.drop(1))
-                        buffer = ""
-                        continue@loop
-                    }
+
+    private fun parseExpression(data: String): Expression {
+        data.toLongOrNull()?.let { return Expression.Constant(it) }
+        if (data == "*") return Expression.Multiplication
+        if (data == "+") return Expression.Addition
+
+        var pointer = 0
+        val output = mutableListOf<Expression>()
+        while (pointer < data.length) {
+            when {
+                data[pointer] == ' ' -> pointer++
+                data[pointer].isDigit() -> {
+                    val number = data.drop(pointer).takeWhile { it.isDigit() }
+                    output.add(parseExpression(number))
+                    pointer += number.length
                 }
+                data[pointer] == '(' -> {
+                    var buffer = ""
+                    var depth = 1
+                    do {
+                        buffer += data[++pointer]
+                        if (data[pointer] == '(') depth++
+                        if (data[pointer] == ')') depth--
+                    } while (depth != 0)
+                    output.add(parseExpression(buffer.dropLast(1)))
+                    pointer++
+                }
+                else -> output.add(parseExpression(data[pointer++].toString()))
+
             }
-            if (depth > 0) {
-                buffer += c
-            } else {
-                expression += c
-            }
         }
-
-        val parts = expression.split(Regex("(?<=[+*])|(?=[+*])")).toMutableList()
-        while(parts.contains("+")) {
-            val op = parts.indexOf("+")
-            val a = parts[op-1]
-            val b = parts[op+1]
-            parts.removeAt(op-1)
-            parts.removeAt(op-1)
-            parts[op-1] = (a.toLong() + b.toLong()).toString()
-        }
-        while(parts.contains("*")) {
-            val op = parts.indexOf("*")
-            val a = parts[op-1]
-            val b = parts[op+1]
-            parts.removeAt(op-1)
-            parts.removeAt(op-1)
-            parts[op-1] = (a.toLong() * b.toLong()).toString()
-        }
-
-        return parts[0]
-
+        return Expression.Subexpression(output)
     }
+
+    private val expressions = input.asLines().map { parseExpression(it.replace(" ", "")) }
+
+    private fun resolve(e: Expression, calculator: (List<Expression>) -> Long): Long =
+        when (e) {
+            is Expression.Subexpression -> calculator(e.list)
+            is Expression.Constant -> e.value
+            else -> error("Can't resolve just $e")
+        }
 
     override suspend fun a(): String {
-        return expressions.map { calculate1(it).toLong() }.sum().toString()
+        fun calculate(e: List<Expression>): Long = when {
+            e.size == 1 -> resolve(e[0], ::calculate)
+            e[e.size - 2] is Expression.Addition -> calculate(e.dropLast(2)) + resolve(e.last(), ::calculate)
+            e[e.size - 2] is Expression.Multiplication -> calculate(e.dropLast(2)) * resolve(e.last(), ::calculate)
+            else -> error("Not operator on ${e[e.size - 2]}")
+        }
+        return expressions.map { resolve(it, ::calculate) }.sum().toString()
     }
 
     override suspend fun b(): String {
-//    println(calculate2("((2 + 4 * 9) * (6 + 9 * 8 + 6) + 6) + 2 + 4 * 2"))
-//        return ""
-            return expressions.map { calculate2(it).toLong() }.sum().toString()
+        fun calculate(e: List<Expression>): Long = when {
+            e.size == 1 -> resolve(e[0], ::calculate)
+            e.contains(Expression.Multiplication) -> e.indexOf(Expression.Multiplication).let {
+                calculate(e.take(it)) * calculate(e.drop(it + 1))
+            }
+            e.contains(Expression.Addition) -> e.indexOf(Expression.Addition).let {
+                calculate(e.take(it)) + calculate(e.drop(it + 1))
+            }
+
+
+            else -> error("Not operator on ${e[e.size - 2]}")
+        }
+        return expressions.map { resolve(it, ::calculate) }.sum().toString()
     }
+
 
 }// 58961504812891
