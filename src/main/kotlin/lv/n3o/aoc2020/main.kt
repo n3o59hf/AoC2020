@@ -8,7 +8,7 @@ import kotlin.system.measureTimeMillis
 
 private const val FIRST_DAY = 1
 private const val LAST_DAY = 25
-private const val ANSWER_SIZE = 24
+private const val ANSWER_SIZE = 48
 private const val TEST_NEW_TASKS = true
 private const val REPEAT_RUNS = 1
 
@@ -51,6 +51,7 @@ val testCases: List<TestCase> = listOf(
     ci(18, "30753705453324", "244817530095503"),
     ci(19, "111", "343"),
     ci(20, "22878471088273", "1680"),
+    ci(21, "2595", "thvm,jmdg,qrsczjv,hlmvqh,zmb,mrfxh,ckqq,zrgzf"),
 )
 
 fun main() = runBlocking {
