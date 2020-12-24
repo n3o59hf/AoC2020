@@ -54,6 +54,7 @@ val testCases: List<TestCase> = listOf(
     ci(21, "2595", "thvm,jmdg,qrsczjv,hlmvqh,zmb,mrfxh,ckqq,zrgzf"),
     ci(22, "32401", "31436"),
     ci(23, "58427369", "111057672960"),
+    ci(24, "330", "3711"),
 )
 
 fun main() = runBlocking {
@@ -146,7 +147,7 @@ suspend fun testNewTasks(): Boolean {
         try {
             val c = ci(i, "", "")
             if (testCases.none { it.name == c.name }) {
-
+                println("Executing ${c.name}")
                 val time = measureTimeMillis {
                     val task = c.executor(c.input)
                     task.debugListener = { s ->
@@ -179,7 +180,7 @@ class TestCase(
     val input: Input,
     val executor: (Input) -> Task,
     val expectedA: String,
-    val expectedB: String
+    val expectedB: String,
 )
 
 class TestResult(
