@@ -13,9 +13,9 @@ class T05(input: Input) : Task(input) {
             .toInt(2)
     }.sorted()
 
-    override suspend fun a() = data.last().toString()
+    override fun a() = data.last().toString()
 
-    override suspend fun b() = (1 + data.windowed(2, 1)
+    override fun b() = (1 + data.windowed(2, 1)
         .first { (a, b) ->
             a + 1 != b
         }[0])

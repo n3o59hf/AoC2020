@@ -55,7 +55,7 @@ class T18(input: Input) : Task(input) {
             else -> error("Can't resolve just $e")
         }
 
-    override suspend fun a(): String {
+    override fun a(): String {
         fun calculate(e: List<Expression>): Long = when {
             e.size == 1 -> resolve(e[0], ::calculate)
             e[e.size - 2] is Expression.Addition -> calculate(e.dropLast(2)) + resolve(e.last(), ::calculate)
@@ -65,7 +65,7 @@ class T18(input: Input) : Task(input) {
         return expressions.map { resolve(it, ::calculate) }.sum().toString()
     }
 
-    override suspend fun b(): String {
+    override fun b(): String {
         fun calculate(e: List<Expression>): Long = when {
             e.size == 1 -> resolve(e[0], ::calculate)
             e.contains(Expression.Multiplication) -> e.indexOf(Expression.Multiplication).let {

@@ -66,6 +66,6 @@ abstract class Task(val input: Input) {
         if (isLoggerOn()) log(scope())
     }
 
-    open suspend fun a(): String = ""
-    open suspend fun b(): String = ""
+    open fun a(): String = ""
+    open fun b(): String = ""
 }

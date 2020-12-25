@@ -20,7 +20,7 @@ class T07(input: Input) : Task(input) {
         color to ruleParts
     }.toMap()
 
-    override suspend fun a(): String {
+    override fun a(): String {
         val reverseRules = rules.flatMap { (from, to) ->
             to.map { (_, color) -> color to from }
         }.groupBy(Pair<String, String>::first, Pair<String, String>::second)
@@ -41,7 +41,7 @@ class T07(input: Input) : Task(input) {
         return (seenBags.size).toString()
     }
 
-    override suspend fun b(): String {
+    override fun b(): String {
         fun sumBags(initial: String): Int {
             val includedBags = rules[initial] ?: error("Should have rules for all")
             return 1 + includedBags.map { (count, bag) -> count * sumBags(bag) }.sum()

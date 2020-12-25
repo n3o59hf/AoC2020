@@ -22,11 +22,11 @@ class T08(input: Input) : Task(input) {
         return lastGoodState
     }
 
-    override suspend fun a(): String {
+    override fun a(): String {
         return getTerminationOrLoop(program).acc.toString()
     }
 
-    override suspend fun b(): String {
+    override fun b(): String {
         for (i in program.indices) {
             val newProgram = program.toMutableList()
             val instruction = newProgram[i]

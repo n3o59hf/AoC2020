@@ -33,7 +33,7 @@ class T21(input: Input) : Task(input) {
         }
     }.sortedBy { it.first }.map { it.second }
 
-    override suspend fun a() = food.sumBy { (it.ingredients - allergenIngredients).size }.toString()
+    override fun a() = food.sumBy { (it.ingredients - allergenIngredients).size }.toString()
 
-    override suspend fun b() = allergenIngredients.joinToString(",")
+    override fun b() = allergenIngredients.joinToString(",")
 }

@@ -8,7 +8,7 @@ import kotlin.math.absoluteValue
 class T12(input: Input) : Task(input) {
     val data = input.asLines().map { it.first() to it.drop(1).toInt() }
 
-    override suspend fun a(): String {
+    override fun a(): String {
         var direction = C2(0, 1)
         var position = C2(0, 0)
         data.forEach { (c, v) ->
@@ -32,7 +32,7 @@ class T12(input: Input) : Task(input) {
         return (position.x.absoluteValue + position.y.absoluteValue).toString()
     }
 
-    override suspend fun b(): String {
+    override fun b(): String {
         var waypoint = C2(1, 10)
         var position = C2(0, 0)
         data.forEach { (c, v) ->

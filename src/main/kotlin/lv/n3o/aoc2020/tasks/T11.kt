@@ -21,7 +21,7 @@ class T11(input: Input) : Task(input) {
         C2(1, 1)
     )
 
-    override suspend fun a(): String {
+    override fun a(): String {
         var grid = data.filter { it.value == 'L' }
         var oldGrid = mapOf<C2, Char>()
         while (oldGrid != grid) {
@@ -39,7 +39,7 @@ class T11(input: Input) : Task(input) {
         else -> error("Too much neighbors")
     }
 
-    override suspend fun b(): String {
+    override fun b(): String {
         val visibleSeats = data.mapNotNull { (c, v) ->
             when (v) {
                 '.' -> null

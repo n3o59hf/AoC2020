@@ -19,14 +19,14 @@ class T02(input: Input) : Task(input) {
         PasswordRow(letter[0], from,to, password.toList())
     }
 
-    override suspend fun a(): String {
+    override fun a(): String {
 
         return data.count {
             it.password.count { c -> c == it.letter } in (it.from..it.to)
         }.toString()
     }
 
-    override suspend fun b(): String {
+    override fun b(): String {
         return data.count {
             (it.password[it.from - 1] == it.letter) != (it.password[it.to-1] == it.letter)
         }.toString()

@@ -39,11 +39,11 @@ class T19(input: Input) : Task(input) {
         return traverse(message, 0, "0").any { it == message.length }
     }
 
-    override suspend fun a() = messages
+    override fun a() = messages
         .count { msg -> baseRuleset.validate(msg) }
         .toString()
 
-    override suspend fun b() = messages
+    override fun b() = messages
         .count { msg -> additionalRules.validate(msg) }
         .toString()
 }

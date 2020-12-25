@@ -9,6 +9,7 @@ import kotlin.system.measureTimeMillis
 private const val FIRST_DAY = 1
 private const val LAST_DAY = 25
 private const val ANSWER_SIZE = 48
+private const val TIME_SIZE = 10
 private const val TEST_NEW_TASKS = true
 private const val REPEAT_RUNS = 1
 
@@ -64,38 +65,40 @@ fun main() = runBlocking {
     var minTime = Long.MAX_VALUE
     (1..REPEAT_RUNS).forEach { runId ->
         val time = measureTimeMillis {
-            val results = testCases.map(this::executeTaskAsync)
+            val results = testCases.asSequence().map(::executeTask)
 
 
             println()
             printTableSeparator()
-            println("| TASK | ${"Answer A".padCenter(ANSWER_SIZE)} | ${"Answer B".padCenter(ANSWER_SIZE)} |")
+            println("| TASK | ${"Answer A".padCenter(ANSWER_SIZE)} | ${"Answer B".padCenter(ANSWER_SIZE)} | ${"Time".padCenter(TIME_SIZE)} |")
             printTableSeparator()
 
-            results.forEach { rA ->
+            results.forEach { result ->
                 print("|")
-                val r = rA.await()
-                print(r.name.padCenter(6, ' '))
+                print(result.name.padCenter(6, ' '))
 
                 print("| ")
-                print(if (r.correctA) "OK" else "F ")
-                print((r.resultA ?: "").padStart(ANSWER_SIZE - 2, ' '))
+                print(if (result.correctA) "OK" else "F ")
+                print((result.resultA ?: "").padStart(ANSWER_SIZE - 2, ' '))
                 print(" | ")
-                print(if (r.correctB) "OK" else "F ")
-                print((r.resultB ?: "").padStart(ANSWER_SIZE - 2, ' '))
+                print(if (result.correctB) "OK" else "F ")
+                print((result.resultB ?: "").padStart(ANSWER_SIZE - 2, ' '))
+                print(" | ")
+                print(result.time.toString().padStart(TIME_SIZE,' '))
                 println(" |")
 
-                if (!r.correctA) {
-                    println("A: Correct=${r.expectedA}")
+
+                if (!result.correctA) {
+                    println("A: Correct=${result.expectedA}")
                 }
-                if (r.exceptionA != null) {
-                    println("A: Exception=${r.exceptionA}")
+                if (result.exceptionA != null) {
+                    println("A: Exception=${result.exceptionA}")
                 }
-                if (!r.correctB) {
-                    println("B: Correct=${r.expectedB}")
+                if (!result.correctB) {
+                    println("B: Correct=${result.expectedB}")
                 }
-                if (r.exceptionB != null) {
-                    println("B: Exception=${r.exceptionB}")
+                if (result.exceptionB != null) {
+                    println("B: Exception=${result.exceptionB}")
                 }
 
             }
@@ -115,13 +118,17 @@ fun main() = runBlocking {
     }
 }
 
-fun CoroutineScope.executeTaskAsync(tc: TestCase) = async(Dispatchers.Default) {
-    val task = withContext(Dispatchers.IO) { tc.executor(tc.input) }
+fun executeTask(tc: TestCase): TestResult {
+    val timeStart = System.currentTimeMillis()
+
+    val task = tc.executor(tc.input)
+
     val (answerA, exceptionA) = try {
-        task.a() to null
-    } catch (e: Exception) {
-        null to e
-    }
+            task.a() to null
+        } catch (e: Exception) {
+            null to e
+        }
+
 
     val (answerB, exceptionB) = try {
         task.b() to null
@@ -129,7 +136,8 @@ fun CoroutineScope.executeTaskAsync(tc: TestCase) = async(Dispatchers.Default) {
         null to e
     }
 
-    TestResult(
+    val timeEnd = System.currentTimeMillis()
+    return TestResult(
         tc.name,
         tc.input,
         tc.expectedA == answerA,
@@ -140,6 +148,7 @@ fun CoroutineScope.executeTaskAsync(tc: TestCase) = async(Dispatchers.Default) {
         answerB,
         exceptionB,
         tc.expectedB,
+        timeEnd - timeStart
     )
 }
 
@@ -173,6 +182,8 @@ fun printTableSeparator() {
     print("-".repeat(ANSWER_SIZE + 2))
     print("+")
     print("-".repeat(ANSWER_SIZE + 2))
+    print("+")
+    print("-".repeat(TIME_SIZE+2))
     println("|")
 }
 
@@ -195,6 +206,7 @@ class TestResult(
     val resultB: String?,
     val exceptionB: Throwable?,
     val expectedB: String,
+    val time: Long,
 ) {
     val correct = correctA && correctB
 }

@@ -6,7 +6,7 @@ import lv.n3o.aoc2020.Task
 class T01(input: Input) : Task(input) {
     val data = input.asListOfLongs()
 
-    override suspend fun a(): String {
+    override fun a(): String {
         val indexed = data.withIndex()
         val (e1, e2) = indexed
             .flatMap { (i, x) -> indexed.mapNotNull { (j, y) -> if (i == j) null else (x + y to (x to y)) } }
@@ -16,7 +16,7 @@ class T01(input: Input) : Task(input) {
         return "${e1 * e2}"
     }
 
-    override suspend fun b(): String {
+    override fun b(): String {
         val indexed = data.withIndex()
         val (e1, e2, e3) = indexed
             .flatMap { (i, x) ->

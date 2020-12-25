@@ -13,7 +13,7 @@ class T22(input: Input) : Task(input) {
         }
         .toString()
 
-    override suspend fun a(): String {
+    override fun a(): String {
         val player1 = cards[0].toMutableList()
         val player2 = cards[1].toMutableList()
 
@@ -30,7 +30,7 @@ class T22(input: Input) : Task(input) {
         return countPoints(player1, player2)
     }
 
-    override suspend fun b(): String {
+    override fun b(): String {
         fun combat(player1: MutableList<Int>, player2: MutableList<Int>): Boolean {
             val previousStates = mutableSetOf<List<Int>>()
 

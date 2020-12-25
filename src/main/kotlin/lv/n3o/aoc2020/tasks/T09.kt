@@ -16,11 +16,11 @@ class T09(input: Input) : Task(input) {
         }
     }.first
 
-    override suspend fun a(): String {
+    override fun a(): String {
         return outlier.toString()
     }
 
-    override suspend fun b(): String {
+    override fun b(): String {
         for (i in data.indices) {
             var current = i
             var reminder = outlier

@@ -28,7 +28,7 @@ class T04(input: Input) : Task(input) {
         "amb", "blu", "brn", "gry", "grn", "hzl", "oth",
     )
 
-    override suspend fun a(): String {
+    override fun a(): String {
         return data.count { entry -> neededFields.all { entry.containsKey(it) } }.toString()
     }
 
@@ -37,7 +37,7 @@ class T04(input: Input) : Task(input) {
         return year != null && year in range
     }
 
-    override suspend fun b(): String {
+    override fun b(): String {
         val validations: Map<String, (String) -> Boolean> = mapOf(
 //        byr (Birth Year) - four digits; at least 1920 and at most 2002.
             "byr" to { checkYear(it, 1920..2002) },

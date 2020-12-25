@@ -18,11 +18,11 @@ class T25(input: Input) : Task(input) {
         return counter
     }
 
-    override suspend fun a() = BigInteger(keys[1])
+    override fun a() = BigInteger(keys[1])
         .modPow(
             BigInteger(findLoopNumber(keys[0].toInt()).toString()),
             BigInteger(divisor.toString())
         ).toString()
 
-    override suspend fun b() = ""
+    override fun b() = ""
 }

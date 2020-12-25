@@ -34,9 +34,9 @@ class T24(input: Input) : Task(input) {
         .filter { it.value.size % 2 == 1 }
         .keys
 
-    override suspend fun a() = initialTiles.count().toString()
+    override fun a() = initialTiles.count().toString()
 
-    override suspend fun b(): String {
+    override fun b(): String {
         var floor = initialTiles
 
         for (day in 1..100) {

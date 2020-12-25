@@ -8,7 +8,7 @@ import lv.n3o.aoc2020.coords.C4
 class T17(input: Input) : Task(input) {
     val initialGrid = input.asCoordGrid().filter { it.value == '#' }.keys.toSet()
 
-    override suspend fun a(): String {
+    override fun a(): String {
         fun getActiveRegion(grid: Iterable<C3>) = grid.flatMap { it.neighbors27(includeSelf = true) }.toSet()
         var currentGrid = initialGrid.map { C3(it.x, it.y, 0) }.toSet()
 
@@ -23,7 +23,7 @@ class T17(input: Input) : Task(input) {
         return currentGrid.size.toString()
     }
 
-    override suspend fun b(): String {
+    override fun b(): String {
         var currentGrid = initialGrid.map { C4(it.x, it.y, 0, 0) }.toSet()
         fun getActiveRegion(grid: Iterable<C4>) = (grid + grid.flatMap(C4::neighbors81)).toSet()
         for (i in 0 until 6) {

@@ -26,6 +26,6 @@ class T15(input: Input) : Task(input) {
         return lastNumber
     }
 
-    override suspend fun a() = getNumber(2020).toString()
-    override suspend fun b() = getNumber(30000000).toString()
+    override fun a() = getNumber(2020).toString()
+    override fun b() = getNumber(30000000).toString()
 }

@@ -5,7 +5,7 @@ import lv.n3o.aoc2020.Task
 
 class T14(input: Input) : Task(input) {
     val instructions = input.asLines().map { it.split(" = ") }
-    override suspend fun a(): String {
+    override fun a(): String {
         val memory = mutableMapOf<Long, Long>()
         var currentMask = ""
 
@@ -26,7 +26,7 @@ class T14(input: Input) : Task(input) {
         return memory.values.sum().toString()
     }
 
-    override suspend fun b(): String {
+    override fun b(): String {
         val memory = mutableMapOf<String, Long>()
         var currentMask = ""
         fun getAddresses(floating: String, depth: Int = 0): List<String> =

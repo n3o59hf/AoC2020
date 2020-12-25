@@ -21,11 +21,11 @@ class T16(input: Input) : Task(input) {
 
     val validNumbers = classes.values.flatMap { it.flatMap { range -> range.toList() } }.toSet()
 
-    override suspend fun a(): String {
+    override fun a(): String {
         return otherTickets.flatten().filter { !validNumbers.contains(it) }.sum().toString()
     }
 
-    override suspend fun b(): String {
+    override fun b(): String {
         val possibleFields = myTicket.map { classes.keys.toMutableSet() }
         otherTickets.forEach { ticket ->
             if (ticket.all { validNumbers.contains(it) }) {

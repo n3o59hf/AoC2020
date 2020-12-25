@@ -7,12 +7,12 @@ class T13(input: Input) : Task(input) {
     val currentTime = input.asLines()[0].toInt()
     val busLines = input.asLines()[1].split(",").map(String::toIntOrNull)
 
-    override suspend fun a(): String {
+    override fun a(): String {
         val nextDepartureTimes = busLines.filterNotNull().map { it to it - (currentTime % it) }
         return nextDepartureTimes.minByOrNull { it.second }?.let { it.first * it.second }.toString()
     }
 
-    override suspend fun b(): String {
+    override fun b(): String {
         val indexedLines = busLines
             .mapIndexedNotNull { offset, id ->
                 if (id == null) null else BussCheck(

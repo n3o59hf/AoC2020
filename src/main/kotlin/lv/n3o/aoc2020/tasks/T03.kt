@@ -7,11 +7,11 @@ import lv.n3o.aoc2020.infinite
 
 class T03(input: Input) : Task(input) {
     val data = input.asCoordGrid().infinite(horizontal = true)
-    override suspend fun a(): String {
+    override fun a(): String {
         return "${getTreesOnSlope(C2(3, 1))}"
     }
 
-    override suspend fun b(): String {
+    override fun b(): String {
         val slopes = listOf(
             C2(1, 1),
             C2(3, 1),

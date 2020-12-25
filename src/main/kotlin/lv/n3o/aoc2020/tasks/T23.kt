@@ -40,9 +40,9 @@ class T23(input: Input) : Task(input) {
         }
     }
 
-    override suspend fun a() = game(initialCups, 100).take(8).joinToString("")
+    override fun a() = game(initialCups, 100).take(8).joinToString("")
 
-    override suspend fun b() = game(initialCups + (10..1_000_000).toList(), 10_000_000)
+    override fun b() = game(initialCups + (10..1_000_000).toList(), 10_000_000)
         .take(2)
         .map { it.toLong() }
         .reduce { a, b -> a * b }

@@ -107,13 +107,13 @@ class T20(input: Input) : Task(input) {
         C2(16, 2)
     )
 
-    override suspend fun a(): String {
+    override fun a(): String {
         return listOf(C2(0, 0), C2(0, gridSize - 1), C2(gridSize - 1, 0), C2(gridSize - 1, gridSize - 1)).map {
             grid[it]?.id?.toLong() ?: error("Should exist")
         }.reduce { a, b -> a * b }.toString()
     }
 
-    override suspend fun b(): String {
+    override fun b(): String {
         var monsterFindMap = grid.flatMap { (c, sq) ->
             val baseCoord = c.times(innerSize)
             (0 until innerSize).flatMap { y ->
